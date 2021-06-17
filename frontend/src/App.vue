@@ -1,13 +1,6 @@
 <template>
   <div id="app">
-    <nav>
-      <!-- un lien de navigation (semblable au "a") -->
-      <router-link to="/">Home</router-link>
-      <!-- on peut aussi utiliser le nom de la route -->
-      <router-link to="Sign">Sign</router-link>
-    </nav>
-    <!-- ici est injecté le routeur -->
-    <router-view />
+     <router-view></router-view>
   </div>
 </template>
 
@@ -26,22 +19,36 @@ export default {
   font-family: 'Lato', sans-serif;
 }
 
-#nav {
-  padding: 10px;
-  a {
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #464655;
-    &.router-link-exact-active {
-      color: #0764E3;
-    }
-  }
+html {
+    height: 100%;
 }
+
+body {
+    background: #F7F7F7;
+    margin: 0;
+    height: 100%;
+}
+
+h2, h3, h4, h5, figure, p{
+    margin: 0;
+}
+
+ul {
+    padding: 0;
+}
+
+a { 
+    color: black;
+}
+
+a:link, a:visited, a:active {
+    text-decoration: none;
+}
+
+a:visited  {
+    text-decoration: none;
+}
+
 </style>
 
 

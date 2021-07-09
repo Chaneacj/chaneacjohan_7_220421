@@ -1,8 +1,8 @@
 <template>
   <header>
-    <h1>
+    <figure>
       <img id="logo" alt="Groupomania" src="../assets/logo.svg" />
-    </h1>
+    </figure>
     <nav>
       <ul>
       <li><router-link to="/">Connexion</router-link></li>
@@ -22,28 +22,31 @@ export default {
 header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin: O;
+    align-items: center;
+    margin: 0;
+    padding: 15px 7% 15px 6%;
     background: #ffffff;
+    border-bottom: 2px solid #E8F0FC;
 
     #logo{
       position: relative;
       width: 30%;
-      left: 10%;
     }
 
     a{
       font-family: 'Montserrat', sans-serif;
       font-style: normal;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #0764E3;
+      color: #464655;
+      padding: 0 0 0 60px;
     }
 
     a:active {
-    color: #464655;
+    color: 
+    #0764E3;
     }
 }
 
@@ -55,7 +58,7 @@ nav {
 nav ul {
     list-style-type: none;
     display: flex;
- margin: 0px 0px 0px xx ;
+    margin: 0px 0px 0px 0px;
 }
 
 

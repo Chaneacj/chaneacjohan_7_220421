@@ -1,14 +1,37 @@
 <template>
-  <header>
-    <figure>
+<!--   <header>
+    <nav class="navbar navbar-expand-lg">
+    <figure class="navbar-brand" collapse>
       <img id="logo" alt="Groupomania" src="../assets/logo.svg" />
     </figure>
-    <nav>
-      <ul>
-      <li><router-link to="/">Connexion</router-link></li>
-      <li><router-link to="/Signup">Inscription</router-link></li>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+      <li class="nav-item nav-link active"><router-link to="/">Connexion</router-link></li>
+      <li class="nav-item nav-link active"><router-link to="/Signup">Inscription</router-link></li>
       </ul>
+    </div>
     </nav>
+  </header> -->
+  <header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><figure class="navbar-brand" collapse>
+      <img id="logo" alt="Groupomania" src="../assets/logo.svg" />
+    </figure></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="#"><router-link to="/">Connexion</router-link></a>
+        <a class="nav-link" href="#"><router-link to="/Signup">Inscription</router-link></a>
+      </div>
+    </div>
+  </div>
+</nav>
   </header>
 </template>
 
@@ -19,12 +42,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    padding: 15px 7% 15px 6%;
+nav {
+    //display: flex;
+    //justify-content: space-between;
+    //align-items: center;
+    //margin: 0;
+    //padding: 15px 7% 15px 6%;
     background: #ffffff;
     border-bottom: 2px solid #E8F0FC;
 
@@ -41,26 +64,23 @@ header {
       letter-spacing: 1px;
       text-transform: uppercase;
       color: #464655;
-      padding: 0 0 0 60px;
+      //padding: 0 0 0 60px;
     }
 
     a:active {
     color: 
     #0764E3;
     }
-}
+} 
 
-nav {
+/* nav {
     display: block;
     margin: 0px;
-}
+} */
 
-nav ul {
+/* nav ul {
     list-style-type: none;
     display: flex;
     margin: 0px 0px 0px 0px;
-}
-
-
-
+} */
 </style>

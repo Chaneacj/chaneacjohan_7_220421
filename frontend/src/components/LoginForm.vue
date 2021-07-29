@@ -1,4 +1,9 @@
 <template>
+<div>
+    <figure>
+      <img id="illustration" alt="Groupomania" src="../assets/people new-03.svg" />
+    </figure>
+
   <form @submit.prevent="test">
     <h2>Hey, look who's here!</h2>
     <h1>Before the start</h1>
@@ -28,6 +33,7 @@
 
     <input type="submit" id="submit" value="Connexion" />
   </form>
+  </div>
 </template>
 
 <script>
@@ -48,10 +54,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+#illustration {
+  margin-top: 50px;
+  width: 58%;
+}
 form {
-  width: 40%;
+  width: 30%;
   position: absolute;
-  left: 50%;
+  left: 60%;
   top: 170px;
 
 
@@ -91,31 +102,30 @@ form {
 
   label {
     color: #595959;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 16px;
     font-weight: 400;
     letter-spacing: 0.583333px;
   }
 
   input {
-    font-size: 9px;
+    font-size: 14px;
     letter-spacing: 0.25px;
-    padding: 0.3em 0.5em;
+    padding: 0.4em 1em;
     width: -moz-available;
     width: -webkit-fill-available;
     width: fill-available;
-    margin: 0px auto 10px;
-    color: #595959;
-    font-size: 16px;
+    margin: 2px auto 10px;
+    color: #ededed;
     line-height: 20px;
     border-radius: 8px;
-    border: 2px solid #e0dedd;
+    border: 2px solid #ededed;
     background: #ffffff;
-  }
 
-  input:focus {
-  color: #0764e3;
-}
+    &:focus {
+      border: 4px solid #0764e3;
+    }
+  }
 
   #submit {
     font-weight: 600;

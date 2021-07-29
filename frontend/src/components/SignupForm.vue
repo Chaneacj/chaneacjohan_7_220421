@@ -1,7 +1,17 @@
 <template>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 col-lg-6">
+    <figure>
+      <img id="illustration" alt="Groupomania" src="../assets/start.svg" />
+    </figure>
+  </div>
+  <div class="col-sm-8 col-lg-6">
   <form @submit.prevent="sendData">
-    <div>
-      <div>
+          <h2>Hey, look who's here!</h2>
+    <h1>Create account</h1>
+    <p>Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward.</p>
+        <label>first name</label>
         <input
           type="text"
           placeholder="Votre prénom"
@@ -11,8 +21,7 @@
           aria-label="Entrez votre prénom"
           v-model="firstName"
         />
-      </div>
-      <div>
+      <label>Last name</label>
         <input
           type="text"
           placeholder="Votre nom"
@@ -22,8 +31,7 @@
           aria-label="Entrez votre nom"
           v-model="lastName"
         />
-      </div>
-      <div>
+      <label>E-mail</label>
         <input
           type="email"
           placeholder="Votre email"
@@ -34,8 +42,7 @@
           aria-label="Entrez votre email"
           v-model="email"
         />
-      </div>
-        <div>
+      <label>Password</label>
         <input
           type="password"
           placeholder="Votre mot de passe"
@@ -46,14 +53,17 @@
           aria-describedby="passwordInfo"
           v-model="password"
         />
-      </div>
-    </div>
+      
+    
 
     <input
       type="submit"
       id="submit"
     />
   </form>
+  </div>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -88,13 +98,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+#illustration {
+  margin-top: 50px;
+  /* width: 65%; */
+}
+
 form {
-  width: 40%;
-  position: absolute;
-  left: 50%;
-  top: 170px;
-
-
   h1 {
     margin-bottom: 11px;
     font-family: Montserrat;
@@ -131,26 +141,29 @@ form {
 
   label {
     color: #595959;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 16px;
     font-weight: 400;
     letter-spacing: 0.583333px;
   }
 
   input {
-    font-size: 9px;
+    font-size: 14px;
     letter-spacing: 0.25px;
-    padding: 0.3em 0.5em;
+    padding: 0.4em 1em;
     width: -moz-available;
     width: -webkit-fill-available;
     width: fill-available;
-    margin: 0px auto 10px;
-    color: #595959;
-    font-size: 16px;
+    margin: 2px auto 10px;
+    color: #ededed;
     line-height: 20px;
     border-radius: 8px;
-    border: 2px solid #e0dedd;
+    border: 2px solid #ededed;
     background: #ffffff;
+
+    &:focus {
+      border: 4px solid #0764e3;
+    }
   }
 
   #submit {

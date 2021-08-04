@@ -48,6 +48,11 @@ export default {
   methods: {
     test() {
       console.log(this.email, this.password);
+      //qxios post -> envoyer tes datas
+        //Si ok
+          //Json -> stoauer en localstorage (session storage)
+        //si non
+          //Afiicher Messsage d'erreur
     },
   },
 };

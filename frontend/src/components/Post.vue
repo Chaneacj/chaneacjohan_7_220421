@@ -20,8 +20,36 @@
 </template>
 
 <script>
+const axios = require("axios");
 export default {
   name: "post",
+  data: () => {
+    return {
+        userId: localStorage.getItem('userId'),
+        userAdmin: localStorage.getItem('userAdmin'),
+        title: "",
+        content: "",
+        file: "",
+        posts: [],
+        post: '',
+    };
+  },
+   displayPost() {
+                axios.get('http://localhost:3000/api/posts', {
+                    headers: {
+                        'Content-Type' : 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                .then(response => {
+                    this.posts = response.data;
+    
+                })
+                .catch(error => {
+                    const msgerror = error.response.data
+                    this.notyf.error(msgerror.error)
+                })
+            },
 };
 </script>
 

@@ -4,6 +4,8 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Feed from '../views/Feed.vue'
 import Profile from '../views/Profile.vue'
+import auth from '../middleware/auth'
+import VueRouteMiddleware from 'vue-route-middleware'
 
 Vue.use(VueRouter)
 
@@ -21,12 +23,18 @@ const routes = [
   {
     path: '/Feed',
     name: 'Feed',
-    component: Feed
+    component: Feed,
+    meta: {
+      middleware: auth
+    }
   },
   {
     path: '/Profile/:id',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      middleware: auth
+    }
   }
 ]
 
@@ -35,4 +43,5 @@ const router = new VueRouter({
   mode:"history"
 })
 
+router.beforeEach(VueRouteMiddleware())
 export default router

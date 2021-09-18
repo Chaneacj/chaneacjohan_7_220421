@@ -80,8 +80,7 @@ export default {
             localStorage.setItem('userId',response.data.userId)
             localStorage.setItem('userAdmin',response.data.userAdmin)
              console.log(response.data);
-            //this.$router.push("Feed");
-            //redirection Route.push recherche google
+            this.$router.push("Feed");
           })
         .catch(error => console.log(error));
         

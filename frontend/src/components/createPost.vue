@@ -24,13 +24,15 @@
           >Entrez votre Message
         </textarea>
 
- <label class="custom-file-label" for="image">Choisir une image</label>
+        <label class="custom-file-label" for="image">Choisir une image</label>
          <input
+          @change="getFile" 
           name="image"
           type="file"
           class="custom-file-input"
           accept="image"
-          
+          ref="file"
+          id="file"
         />
         <input type="submit" id="submit" value="Publier" />
       </form>
@@ -47,19 +49,30 @@ export default {
     return {
         title: "",
         content: "",
+        file: "",
     };
   },
 
   methods: {
+    getFile(){
+      this.file = this.$refs.file.files[0];
+      console.log(this.file);
+    },
     sendData() {
-      let postcontent = {
-        title : this.title,
-        content : this.content,
-      }
-      console.log(postcontent);
       if(this.title != null || this.content != null ){
+        
+        let formData = new FormData();
+        formData.append('title', this.title);
+        formData.append('content', this.content);
+        formData.append('image', this.file);
+
         axios
-          .post("http://localhost:3000/api/post/create" , postcontent , {headers : {authorization : "barer " + window.localStorage.getItem("token")}})
+          .post("http://localhost:3000/api/post/create" , formData , {
+            headers : {
+              authorization : "barer " + window.localStorage.getItem("token"),
+              "content-type" : "multipart/form-data"
+              }
+            })
           .then((json) => {console.log(json)})
           .then(response => {
              if (response) {

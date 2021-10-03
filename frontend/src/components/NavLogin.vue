@@ -1,22 +1,7 @@
 <template>
-<!--   <header>
-    <nav class="navbar navbar-expand-lg">
-    <figure class="navbar-brand" collapse>
-      <img id="logo" alt="Groupomania" src="../assets/logo.svg" />
-    </figure>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-      <li class="nav-item nav-link active"><router-link to="/">Connexion</router-link></li>
-      <li class="nav-item nav-link active"><router-link to="/Signup">Inscription</router-link></li>
-      </ul>
-    </div>
-    </nav>
-  </header> -->
+
   <header>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-md navbar-light bg-light ">
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><figure class="navbar-brand" collapse>
       <img id="logo" alt="Groupomania" src="../assets/logo.svg" />
@@ -26,7 +11,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="#"><router-link to="/">Connexion</router-link></a>
+        <a class="nav-link active" aria-current="page" href="#"><router-link to="/Login">Connexion</router-link></a>
         <a class="nav-link" href="#"><router-link to="/Signup">Inscription</router-link></a>
       </div>
     </div>
@@ -43,13 +28,9 @@ export default {
 
 <style scoped lang="scss">
 nav {
-    //display: flex;
-    //justify-content: space-between;
-    //align-items: center;
-    //margin: 0;
-    //padding: 15px 7% 15px 6%;
     background: #ffffff;
     border-bottom: 2px solid #E8F0FC;
+    z-index: 1000;
 
     #logo{
       position: relative;
@@ -64,7 +45,6 @@ nav {
       letter-spacing: 1px;
       text-transform: uppercase;
       color: #464655;
-      //padding: 0 0 0 60px;
     }
 
     a:active {
@@ -72,15 +52,4 @@ nav {
     #0764E3;
     }
 } 
-
-/* nav {
-    display: block;
-    margin: 0px;
-} */
-
-/* nav ul {
-    list-style-type: none;
-    display: flex;
-    margin: 0px 0px 0px 0px;
-} */
 </style>

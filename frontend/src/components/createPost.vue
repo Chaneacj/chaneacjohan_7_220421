@@ -78,6 +78,7 @@ export default {
              if (response) {
               window.location.reload();
             }
+            this.$router.push("Feed");
           })
         .catch(error => console.log(error));
       }else {

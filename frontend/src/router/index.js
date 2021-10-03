@@ -4,6 +4,8 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Feed from '../views/Feed.vue'
 import Profile from '../views/Profile.vue'
+import PostForm from '../views/PostForm.vue'
+import Admin from '../views/Admin.vue'
 import auth from '../middleware/auth'
 import VueRouteMiddleware from 'vue-route-middleware'
 
@@ -29,7 +31,23 @@ const routes = [
     }
   },
   {
-    path: '/Profile/:id',
+    path: '/PostForm',
+    name: 'PostForm',
+    component: PostForm,
+    meta: {
+      middleware: auth
+    }
+  },
+  {
+    path: '/Admin',
+    name: 'Admin',
+    component: Admin,
+    meta: {
+      middleware: auth
+    }
+  },
+  {
+    path: '/Profile',
     name: 'Profile',
     component: Profile,
     meta: {

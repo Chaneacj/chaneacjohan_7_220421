@@ -2,10 +2,10 @@
   <div>
     <NavLogin />
 
-    <form>
+    <div>
       <div class="container">
         <div class="row">
-          <div class="col-sm-4 col-lg-6">
+          <div class="col-sm-6 col-lg-6">
             <figure>
               <img
                 id="illustration"
@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -120,9 +120,17 @@ export default {
 
 <style scoped lang="scss">
 
-#illustration {
-  margin-top: 50px;
-  /* width: 65%; */
+.container {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.row {
+ justify-content: center;
 }
 
 form {

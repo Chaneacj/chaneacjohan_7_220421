@@ -20,9 +20,14 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-link active" aria-current="page" href="#"
-              ><router-link to="/"></router-link>Mon Compte</a>
-            <a class="nav-link" href="#"
-              ><router-link to="/Login">Déconnexion</router-link></a>
+              ><router-link to="/Feed">Feed</router-link></a
+            >
+            <a class="nav-link active" href=""
+              ><router-link to="/Profile"></router-link>Profile</a
+            >
+            <a class="nav-link" href=""
+              ><router-link to="/Login">Déconnexion</router-link></a
+            >
           </div>
         </div>
       </div>
@@ -38,11 +43,6 @@ export default {
 
 <style scoped lang="scss">
 nav {
-  //display: flex;
-  //justify-content: space-between;
-  //align-items: center;
-  //margin: 0;
-  //padding: 15px 7% 15px 6%;
   background: #ffffff;
   border-bottom: 2px solid #e8f0fc;
 
@@ -59,22 +59,10 @@ nav {
     letter-spacing: 1px;
     text-transform: uppercase;
     color: #464655;
-    //padding: 0 0 0 60px;
   }
 
   a:active {
     color: #0764e3;
   }
 }
-
-/* nav {
-    display: block;
-    margin: 0px;
-} */
-
-/* nav ul {
-    list-style-type: none;
-    display: flex;
-    margin: 0px 0px 0px 0px;
-} */
 </style>

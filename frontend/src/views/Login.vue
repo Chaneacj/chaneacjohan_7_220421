@@ -2,7 +2,10 @@
   <div>
     <NavLogin />
 
-    <div>
+      <div class="main-container">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6 col-lg-6">
       <figure>
         <img
           id="illustration"
@@ -10,7 +13,8 @@
           src="../assets/people new-03.svg"
         />
       </figure>
-
+          </div>
+          <div class="col-sm-8 col-lg-6">
       <form @submit.prevent="login">
         <h2>Hey, look who's here!</h2>
         <h1>Before the start</h1>
@@ -42,6 +46,9 @@
 
         <input type="submit" id="submit" value="Connexion" />
       </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -79,6 +86,8 @@ export default {
             localStorage.setItem('token',response.data.token)
             localStorage.setItem('userId',response.data.userId)
             localStorage.setItem('userAdmin',response.data.userAdmin)
+            localStorage.setItem('firstName',response.data.firstName)
+            localStorage.setItem('lastName',response.data.lastName)
              console.log(response.data);
             this.$router.push("Feed");
           })
@@ -96,17 +105,21 @@ export default {
 
 <style scoped lang="scss">
 
-#illustration {
-  margin-top: 50px;
-  width: 58%;
-}
-form {
-  width: 30%;
+.container {
+  margin: 0;
   position: absolute;
-  left: 60%;
-  top: 170px;
+  padding-top: 0;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 
+.row {
+ justify-content: center;
+}
 
+form {
   h1 {
     margin-bottom: 11px;
     font-family: Montserrat;
@@ -164,6 +177,7 @@ form {
     background: #ffffff;
 
     &:focus {
+      color: #2c2c2c;
       border: 4px solid #0764e3;
     }
   }

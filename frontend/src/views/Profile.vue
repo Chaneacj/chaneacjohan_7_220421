@@ -10,19 +10,18 @@
             <small class="text-muted">Modifier</small>
           </p>
           <p class="col-2 card-text">
-            <small class="text-muted">Supprimer</small>
+            <small @click="deleteProfile" class="text-muted">Supprimer</small>
           </p>
         </div>
         <img
           class="img-circle"
-          src="http://d13yacurqjgara.cloudfront.net/users/195163/screenshots/1755983/survey_2x.png"
+          src=""
           alt="Blueprint Wire illustration"
         />
         <div class="card-body">
-          <h5 class="card-title">John Doe</h5>
+          <h5 v-if="user" class="card-title">{{ user.firstName }}</h5>
           <p class="card-text">
-            With supporting text below as a natural lead-in to additional
-            content.
+            {{ user.content }}
           </p>
         </div>
       </div>
@@ -31,12 +30,69 @@
 </template>
 
 <script>
+import axios from "axios";
 import Nav from "@/components/Nav.vue";
 
 export default {
   name: "profile",
   components: {
     Nav,
+  },
+  data() {
+    return {
+      user: "",
+    };
+  },
+  mounted() {
+    
+		axios
+    
+			.get("http://localhost:3000/api/user/profil", {
+				headers: {
+          "Content-Type": "application/json",
+					Authorization: "Bearer" + localStorage.getItem("token"),
+				},
+			})
+			.then((response) => {
+				this.user = response.data;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, 
+  methods: {
+    // Permet d'afficher les informations de profil
+/*     displayProfile() {
+      const userId = localStorage.getItem("userId");
+      axios
+        .get("http://localhost:3000/api/user/profil/" + userId, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          this.user = response.data;
+          localStorage.setItem("imageProfile", response.data.imageProfile);
+        })
+        .catch((error) => {
+          const msgerror = error.response.data;
+          this.notyf.error(msgerror.error);
+        });
+    },  */
+        deleteProfile() {
+          const userId = localStorage.getItem("userId");
+      axios
+        .delete("http://localhost:3000/api/user/delete", + userId, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        })
+        .then(() => {
+          localStorage.clear();
+          this.$router.push('/');
+        })
+        .catch(error => console.log(error));
+    },
   },
 };
 </script>

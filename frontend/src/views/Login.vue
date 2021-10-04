@@ -86,8 +86,6 @@ export default {
             localStorage.setItem('token',response.data.token)
             localStorage.setItem('userId',response.data.userId)
             localStorage.setItem('userAdmin',response.data.userAdmin)
-            localStorage.setItem('firstName',response.data.firstName)
-            localStorage.setItem('lastName',response.data.lastName)
              console.log(response.data);
             this.$router.push("Feed");
           })

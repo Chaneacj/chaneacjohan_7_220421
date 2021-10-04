@@ -15,15 +15,41 @@
             >
           </p>
           <p class="col-2 card-text">
-            <small class="text-muted">Modifier</small>
+            <small >
+              modifier
+              >
+            </small>
           </p>
           <p class="col-2 card-text">
-            <small v-on:click="deletePost(post.id)" class="text-muted"
-              >Supprimer</small
-            >
+            <small v-on:click="deletePost(post.id)">Supprimer</small>
           </p>
         </div>
       </div>
+       <form>
+        <label>Modifier votre message</label>
+        <textarea
+          v-model="contentmodifyPost"
+          :placeholder="post.content"
+          type="text"
+          id="content"
+          required
+          aria-label="Entrez votre Message"
+        >
+        Entrez votre Message
+        </textarea>
+
+        <label class="custom-file-label" for="image">Choisir une image</label>
+        <input
+              @change="getFile"
+              name="image"
+              type="file"
+              ref="fileUpload"
+              accept="image"
+              aria-label="Sélectionner un fichier"
+              id="file"
+            />
+        <input v-on:click="modifyPost(post.id)" type="submit" id="submit" value="Modifier" />
+      </form> 
       <h5 class="card-title">{{ post.title }}</h5>
       <div class="card-img" v-if="post.imagePost">
         <img :src="post.imagePost" class="rounded img-fluid" alt="..." />
@@ -97,6 +123,7 @@ export default {
 
   data: () => {
     return {
+      contentmodifyPost: "",
       comment: {
         content: "",
       },
@@ -110,6 +137,61 @@ export default {
         return moment(String(date)).format("DD/MM/YYYY");
       }
     },
+
+    getFile() {
+      this.file = this.$refs.file.files[0];
+      console.log(this.file);
+    },
+
+    // Permet d'afficher le champ pour modifier un message
+    displayModifyPost(id) {
+      const postId = id;
+      let contentPost = document.querySelector('p[contentPostId="' + id + '"]');
+      let contentPostId = contentPost.getAttribute("contentPostId");
+      if (
+        postId == contentPostId &&
+        this.showInputModify == false
+      ) {
+        contentPost.style.display = "none";
+        this.showInputModify = !this.showInputModify;
+        let imgPost = document.querySelector('img[imgPostId="' + id + '"]');
+        let imgPostId = imgPost.getAttribute("imgPostId");
+        if (postId == imgPostId) {
+          imgPost.style.display = "none";
+        }
+      } else if (this.showInputModify == true) {
+        contentPost.style.display = "block";
+        let imgPost = document.querySelector('img[imgPostId="' + id + '"]');
+        imgPost.style.display = "block";
+        this.showInputModify = !this.showInputModify;
+      }
+    },
+    // Permet de modifier un message
+    modifyPost(id) {
+      const postId = id;
+      const formData = new FormData();
+      formData.append("content", this.contentmodifyPost);
+      formData.append("image", this.imagePost);
+
+      axios
+        .put("http://localhost:3000/api/post/update/" + postId, formData, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          //window.location.reload();
+        })
+        .catch((error) => {
+          const msgerror = error.response.data;
+          this.notyf.error(msgerror.error);
+        });
+    },
+
+
+    
+
     deletePost(id) {
       const postId = id;
       axios
@@ -128,6 +210,7 @@ export default {
         });
     },
   },
+  
 
   // Permet de créer un nouveau commentaire
   createComment(id) {
@@ -173,7 +256,6 @@ export default {
         this.notyf.error(msgerror.error);
       });
   },
-
 };
 </script>
 

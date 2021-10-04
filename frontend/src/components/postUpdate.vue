@@ -1,32 +1,32 @@
 <template>
   <div class="card mb-3" style="max-width: 540px">
     <div class="card-body">
-      <form @submit.prevent="sendData">
+<form @submit.prevent="sendData">
         <label>Titre</label>
         <input
-          v-model="title"
+        v-model="title"
           type="text"
           placeholder="Titre de votre article"
           id="title"
           required
           aria-label="Entrez le titre de votre article"
+          
         />
 
         <label>Message</label>
-        <textarea
-          v-model="content"
-          type="text"
+        <textarea 
+        v-model="content"
+        type="text"
           placeholder="Message de votre article"
           id="content"
           required
           aria-label="Entrez votre Message"
-        >
-Entrez votre Message
+          >Entrez votre Message
         </textarea>
 
         <label class="custom-file-label" for="image">Choisir une image</label>
-        <input
-          @change="getFile"
+         <input
+          @change="getFile" 
           name="image"
           type="file"
           class="custom-file-input"
@@ -44,53 +44,59 @@ Entrez votre Message
 const axios = require("axios");
 
 export default {
-  name: "createPost",
+  name: "updatePost",
   data: () => {
     return {
-      title: "",
-      content: "",
-      file: "",
+        title: "",
+        content: "",
+        file: "",
     };
   },
 
   methods: {
-    getFile() {
+    getFile(){
       this.file = this.$refs.file.files[0];
       console.log(this.file);
     },
-    sendData() {
-      if (this.title != null || this.content != null) {
-        let formData = new FormData();
-        formData.append("title", this.title);
-        formData.append("content", this.content);
-        formData.append("image", this.file);
+    updateMsg() {
+			const fd = new FormData();
+			fd.append("title", this.title);
+			fd.append("content", this.content);
+			fd.append("inputFile", this.file);
+			if (this.$refs.form.validate()) {
+				axios
+					.put(
+						"http://localhost:3000/api/messages/update/" +
+							postId, formData,
+						fd,
+						{
+							headers: {
+								authorization : "barer " + window.localStorage.getItem("token")
+							},
+						}
+					)
+					.then(() => {
+						this.$store.dispatch("setSnackbar", {
+							text: "Votre message a été modifié.",
+						});
+						this.$router.push({
+							name: "allMessages",
+						});
+					});
+				this.$store.dispatch("setSnackbar", {
+					color: "error",
+					text: "Veuillez réessayer.",
+				});
+			}
+		},
+	},
 
-        axios
-          .post("http://localhost:3000/api/post/create", formData, {
-            headers: {
-              authorization: "barer " + window.localStorage.getItem("token"),
-              "content-type": "multipart/form-data",
-            },
-          })
-          .then((json) => {
-            console.log(json);
-          })
-          .then((response) => {
-            if (response) {
-              window.location.reload();
-            }
-            this.$router.push("Feed");
-          })
-          .catch((error) => console.log(error));
-      } else {
-        alert("Un problème de saisie est survenue");
-      }
-    },
-  },
 };
 </script>
 
 <style scoped lang="scss">
+
+
 form {
   h1 {
     margin-bottom: 11px;
@@ -166,7 +172,7 @@ form {
     border-radius: 8px;
     border: 2px solid #ededed;
     background: #ffffff;
-  }
+    }
 
   #submit {
     font-weight: 600;
@@ -180,4 +186,6 @@ form {
     margin-top: 10px;
   }
 }
+
+
 </style>

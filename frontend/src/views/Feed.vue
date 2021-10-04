@@ -32,8 +32,8 @@ export default {
         content: "",
         imagePost: "",
       },
+      contentmodifyPost: '',
       posts: [],
-      comments: [],
       }
     },
     mounted(){

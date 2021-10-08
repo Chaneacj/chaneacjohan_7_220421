@@ -19,14 +19,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#"
+            <a class="nav-link active"  href="#"
               ><router-link to="/Feed">Feed</router-link></a
             >
             <a class="nav-link active" href=""
               ><router-link to="/Profile"></router-link>Profile</a
             >
-            <a class="nav-link" href=""
-              ><router-link to="/Login">Déconnexion</router-link></a
+            <a @click="logout" class="nav-link" href=""
+              ><router-link to="/">Déconnexion</router-link></a
             >
           </div>
         </div>
@@ -38,7 +38,13 @@
 <script>
 export default {
   name: "Nav",
+          methods: {
+            logout() {
+              localStorage.clear();
+            }
+        }
 };
+
 </script>
 
 <style scoped lang="scss">

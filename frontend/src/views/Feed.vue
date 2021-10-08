@@ -7,7 +7,7 @@
       </button>
     </div>
     <div class="container-md"></div>
-      <Post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"/>
+    <Post v-for="post in posts" v-bind:key="post.id" v-bind:post="post" />
   </div>
 </template>
 
@@ -16,14 +16,13 @@ const axios = require("axios");
 import Nav from "@/components/Nav.vue";
 import Post from "@/components/Post.vue";
 
-
 export default {
   name: "Feed",
   components: {
     Nav,
     Post,
   },
-   data: () => {
+  data: () => {
     return {
       post: {
         userId: localStorage.getItem("userId"),
@@ -32,12 +31,13 @@ export default {
         content: "",
         imagePost: "",
       },
-      contentmodifyPost: '',
+
+      contentmodifyPost: "",
       posts: [],
-      }
-    },
-    mounted(){
-      axios
+    };
+  },
+  mounted() {
+    axios
       .get("http://localhost:3000/api/post", {
         headers: {
           "Content-Type": "application/json",
@@ -45,16 +45,20 @@ export default {
         },
       })
       .then((response) => {
-         console.log("post", response.data);
-        this.posts = response.data;
+        const sorted = response.data.sort(function (a, b) {
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        console.log("post", response.data);
+        this.posts = sorted;
       })
       .catch((error) => {
         const msgerror = error.response.data;
         this.notyf.error(msgerror.error);
       });
-    },
-    methods: {
-    }
+  },
+  methods: {},
 };
 </script>
 

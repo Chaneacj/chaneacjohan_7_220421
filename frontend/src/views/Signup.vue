@@ -109,7 +109,7 @@ export default {
         axios
           .post("http://localhost:3000/api/user/signup" , contact , {headers : {authorization : "bare "}})
           .then((json) => {console.log(json)})
-          this.$router.push("Login");
+          this.$router.push("/");
     }  else {
         alert("Un problème de saisie est survenue");
       }

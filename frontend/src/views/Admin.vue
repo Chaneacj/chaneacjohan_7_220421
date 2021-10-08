@@ -1,23 +1,79 @@
 <template>
   <div>
     <Nav />
-    <div class="card mb-3" style="max-width: 540px">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <a href="#" class="btn btn-primary">Supprimer cette utilisateur</a>
-        </div>
+    <div
+      v-for="user in users"
+      :key="user.id"
+      class="card mb-3"
+      style="max-width: 540px"
+    >
+      <div class="card-body">
+        <h5 class="card-title">{{ user.first_name }}</h5>
+        <a v-on:click="deleteUser(user.id)" class="btn btn-primary">Supprimer cette utilisateur</a>
       </div>
     </div>
-  
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 import Nav from "@/components/Nav.vue";
 
 export default {
   name: "Admin",
   components: {
     Nav,
+  },
+  data() {
+    return {
+      user: "",
+      users: [],
+      userId: localStorage.getItem("userId"),
+      userAdmin: localStorage.getItem("userAdmin"),
+    };
+  },
+
+  mounted() {
+    this.displayUsers();
+  },
+
+  methods: {
+    // Permet d'afficher les informations de profil
+    displayUsers() {
+      //const userId = localStorage.getItem("userId");
+      axios
+        .get("http://localhost:3000/api/user/allprofil", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          this.users = response.data;
+        })
+        .catch((error) => {
+          const msgerror = error.response.data;
+          this.notyf.error(msgerror.error);
+        });
+    },
+    deleteUser(id) {
+      //const userId = id;
+      axios
+        .delete("http://localhost:3000/api/user/delete/" + id, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          this.displayUsers();
+        })
+        .catch(() => {
+          // const msgerror = error.response.data;
+          // this.notyf.error(msgerror.error);
+          // console.log(msgerror)
+          //window.location.reload();
+        });
+    },
   },
 };
 </script>

@@ -6,26 +6,23 @@
           <p class="col-3 card-text">
             <small class="text-muted"
               ><i class="far fa-calendar"></i
-              >{{ dateFormat(post.createdAt) }}</small
+              >{{ [' ']+dateFormat(post.createdAt) }}</small
             >
           </p>
           <p class="col-5 card-text">
             <small class="text-muted"
-              ><i class="far fa-user"></i>{{ post.firstName }}</small
+              ><i class="far fa-user"></i>{{ [' ']+post.User.first_name +[' ']+ post.User.last_name }}</small
             >
           </p>
-          <p class="col-2 card-text">
-            <small >
-              modifier
-              >
-            </small>
+          <p v-on:click="toggleOpened()" v-if="userId == post.UserId" class="col-2 card-text">
+            <small> Modifier</small>
           </p>
-          <p class="col-2 card-text">
+          <p class="col-2 card-text" v-if="userId == post.UserId || userAdmin == 'true'">
             <small v-on:click="deletePost(post.id)">Supprimer</small>
           </p>
         </div>
       </div>
-       <form>
+      <form v-if="opened">
         <label>Modifier votre message</label>
         <textarea
           v-model="contentmodifyPost"
@@ -40,16 +37,21 @@
 
         <label class="custom-file-label" for="image">Choisir une image</label>
         <input
-              @change="getFile"
-              name="image"
-              type="file"
-              ref="fileUpload"
-              accept="image"
-              aria-label="Sélectionner un fichier"
-              id="file"
-            />
-        <input v-on:click="modifyPost(post.id)" type="submit" id="submit" value="Modifier" />
-      </form> 
+          @change="getFile(post.id)"
+          name="image"
+          type="file"
+          :id="post.id"
+          :ref="'tes'+post.id"
+          accept="image"
+          aria-label="Sélectionner un fichier"
+        />
+        <input
+          v-on:click="modifyPost(post.id)"
+          type="submit"
+          id="submit"
+          value="Modifier"
+        />
+      </form>
       <h5 class="card-title">{{ post.title }}</h5>
       <div class="card-img" v-if="post.imagePost">
         <img :src="post.imagePost" class="rounded img-fluid" alt="..." />
@@ -59,29 +61,22 @@
       </p>
       <hr class="solid" />
       <div>
-        <form>
-          <!--          <textarea
+        <form @submit="createComment">
+          <textarea
             class="form-control"
-            v-model="commentTitle"
+            v-model="newCommentMsg"
             type="text"
             placeholder="Commenter le message"
-            id="commentTitle"
+            id="newComment"
             required
             aria-label="Entrez le titre de votre article"
-          /> -->
-          <input type="submit" id="submit" value="Publier" />
+          />
+          <button type="submit">Publier</button>
         </form>
       </div>
       <hr class="solid" />
-      <div
-        class="displayComment"
-        v-for="comment in comments"
-        :key="comment.commentId"
-      >
-        <div
-          v-bind:showComment="showComment"
-          v-if="showComment && post.id == comment.postId"
-        >
+      <div class="displayComment" v-for="comment in comments" :key="comment.id">
+        <div>
           <div class="row">
             <div class="col-md-2">
               <img class="img-fluid rounded-start" alt="..." />
@@ -95,7 +90,11 @@
                     }}</small>
                   </p>
                   <p class="col-3 card-text">
-                    <small class="text-muted">Supprimer</small>
+                    <small
+                      v-on:click="deleteComment(comment.id)"
+                      class="text-muted"
+                      >Supprimer</small
+                    >
                   </p>
                   <h6 class="card-title">Name</h6>
                 </div>
@@ -128,9 +127,18 @@ export default {
         content: "",
       },
       comments: [],
+      opened: false,
+      newCommentMsg: "",
+      file: "",
+      userAdmin: localStorage.getItem("userAdmin"),
+      userId: localStorage.getItem("userId"),
     };
   },
   props: ["post"],
+  mounted() {
+    this.displayComment();
+  },
+
   methods: {
     dateFormat(date) {
       if (date) {
@@ -138,8 +146,13 @@ export default {
       }
     },
 
-    getFile() {
-      this.file = this.$refs.file.files[0];
+    toggleOpened() {
+      this.opened = !this.opened;
+    },
+
+    getFile(id) {
+      console.log(document.getElementById(id));
+      this.file = document.getElementById(id).file.files[0];
       console.log(this.file);
     },
 
@@ -148,10 +161,7 @@ export default {
       const postId = id;
       let contentPost = document.querySelector('p[contentPostId="' + id + '"]');
       let contentPostId = contentPost.getAttribute("contentPostId");
-      if (
-        postId == contentPostId &&
-        this.showInputModify == false
-      ) {
+      if (postId == contentPostId && this.showInputModify == false) {
         contentPost.style.display = "none";
         this.showInputModify = !this.showInputModify;
         let imgPost = document.querySelector('img[imgPostId="' + id + '"]');
@@ -181,16 +191,13 @@ export default {
           },
         })
         .then(() => {
-          //window.location.reload();
+          window.location.reload();
         })
         .catch((error) => {
           const msgerror = error.response.data;
           this.notyf.error(msgerror.error);
         });
     },
-
-
-    
 
     deletePost(id) {
       const postId = id;
@@ -204,57 +211,74 @@ export default {
         .then(() => {
           this.displayPost();
         })
+        .catch(() => {
+          // const msgerror = error.response.data;
+          // this.notyf.error(msgerror.error);
+          // console.log(msgerror)
+          window.location.reload();
+        });
+    },
+
+    // Permet de créer un nouveau commentaire
+    createComment(event) {
+      event.preventDefault();
+      axios
+        .post(
+          "http://localhost:3000/api/comment/" + this.post.id,
+          {
+            content: this.newCommentMsg,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        )
+        .then(() => {
+          this.displayComment();
+        })
         .catch((error) => {
           const msgerror = error.response.data;
           this.notyf.error(msgerror.error);
         });
     },
-  },
-  
 
-  // Permet de créer un nouveau commentaire
-  createComment(id) {
-    const postId = id;
-    axios
-      .post(
-        "http://localhost:3000/api/comment/" + postId,
-        {
-          content: this.contentComment,
-        },
-        {
+    // Permet d'afficher les commentaires d'un message
+    displayComment() {
+      this.showComment = !this.showComment;
+      axios
+        .get("http://localhost:3000/api/comment/" + this.post.id, {
           headers: {
+            "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        }
-      )
-      .then(() => {
-        window.location.reload();
-      })
-      .catch((error) => {
-        const msgerror = error.response.data;
-        this.notyf.error(msgerror.error);
-      });
-  },
+        })
+        .then((response) => {
+          this.comments = response.data;
+        })
+        .catch((error) => {
+          const msgerror = error.response.data;
+          this.notyf.error(msgerror.error);
+        });
+    },
 
-  // Permet d'afficher les commentaires d'un message
-  displayComment(id) {
-    this.showComment = !this.showComment;
-    const postId = id;
-
-    axios
-      .get("http://localhost:3000/api/comment/" + postId, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      })
-      .then((response) => {
-        this.comments = response.data;
-      })
-      .catch((error) => {
-        const msgerror = error.response.data;
-        this.notyf.error(msgerror.error);
-      });
+    deleteComment(id) {
+      axios
+        .delete("http://localhost:3000/api/comment/" + id, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then(() => {
+          this.displayComment();
+        })
+        .catch((error) => {
+          console.log(error);
+          const msgerror = error.response.data;
+          this.notyf.error(msgerror.error);
+        });
+    },
   },
 };
 </script>

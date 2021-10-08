@@ -6,22 +6,57 @@
         <div class="row card-info">
           <p class="col-3 card-text"></p>
           <p class="col-5 card-text"></p>
-          <p class="col-2 card-text">
+          <p v-on:click="toggleOpened()" class="col-2 card-text">
             <small class="text-muted">Modifier</small>
           </p>
           <p class="col-2 card-text">
             <small @click="deleteProfile" class="text-muted">Supprimer</small>
           </p>
         </div>
-        <img
-          class="img-circle"
-          src=""
-          alt="Blueprint Wire illustration"
-        />
+        <form v-if="opened">
+          <label>Modifier votre biographie</label>
+          <textarea
+            v-model="contentmodifyUser"
+            :placeholder="user.bio"
+            type="text"
+            id="content"
+            required
+            aria-label="Entrez votre Message"
+          >
+        Entrez votre Message
+        </textarea
+          >
+
+          <label class="custom-file-label" for="image">Choisir une photo de profil</label>
+          <input
+            @change="getFile(user.id)"
+            name="image"
+            type="file"
+            :id="user.id"
+            :ref="'test' + user.id"
+            accept="image"
+            aria-label="Sélectionner un fichier"
+          />
+          <input
+            v-on:click="modifyUser(user.id)"
+            type="submit"
+            id="submit"
+            value="Modifier"
+          />
+        </form>
+        <div class="card-img" v-if="user.photo">
+          <img class="img-circle" :src="user.photo" alt="..." />
+        </div>
+
         <div class="card-body">
-          <h5 v-if="user" class="card-title">{{ user.firstName }}</h5>
+          <h5 class="card-title">
+            {{ user.first_name + [" "] + user.last_name }}
+          </h5>
           <p class="card-text">
-            {{ user.content }}
+            {{ user.email }}
+          </p>
+          <p class="card-text">
+            {{ user.bio }}
           </p>
         </div>
       </div>
@@ -40,29 +75,51 @@ export default {
   },
   data() {
     return {
+      contentmodifyUser: "",
       user: "",
+      userId: localStorage.getItem("userId"),
+      opened: false,
+      file: "",
     };
   },
+
   mounted() {
-    
-		axios
-    
-			.get("http://localhost:3000/api/user/profil", {
-				headers: {
-          "Content-Type": "application/json",
-					Authorization: "Bearer" + localStorage.getItem("token"),
-				},
-			})
-			.then((response) => {
-				this.user = response.data;
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, 
+    this.displayUser();
+  },
   methods: {
+    toggleOpened() {
+      this.opened = !this.opened;
+    },
+
+    getFile(id) {
+      console.log(document.getElementById(id));
+      this.file = document.getElementById(id).file.files[0];
+      console.log(this.file);
+    },
+
+    // Permet d'afficher le champ pour modifier un message
+    displayModifyUser(id) {
+      const userId = localStorage.getItem("userId");
+      let contentUser = document.querySelector('p[bioUserId="' + id + '"]');
+      let contentUserId = contentUser.getAttribute("contentUserId");
+      if (userId == contentUserId && this.showInputModify == false) {
+        contentUser.style.display = "none";
+        this.showInputModify = !this.showInputModify;
+        let photo = document.querySelector('img[photoId="' + id + '"]');
+        let photoId = photo.getAttribute("photoId");
+        if (userId == photoId) {
+          photo.style.display = "none";
+        }
+      } else if (this.showInputModify == true) {
+        contentUser.style.display = "block";
+        let photo = document.querySelector('img[photoId="' + id + '"]');
+        photo.style.display = "block";
+        this.showInputModify = !this.showInputModify;
+      }
+    },
+
     // Permet d'afficher les informations de profil
-/*     displayProfile() {
+    displayUser() {
       const userId = localStorage.getItem("userId");
       axios
         .get("http://localhost:3000/api/user/profil/" + userId, {
@@ -72,26 +129,27 @@ export default {
         })
         .then((response) => {
           this.user = response.data;
-          localStorage.setItem("imageProfile", response.data.imageProfile);
+          console.log(this.user);
         })
         .catch((error) => {
           const msgerror = error.response.data;
           this.notyf.error(msgerror.error);
         });
-    },  */
-        deleteProfile() {
-          const userId = localStorage.getItem("userId");
+    },
+
+    deleteProfile() {
+      const userId = localStorage.getItem("userId");
       axios
-        .delete("http://localhost:3000/api/user/delete", + userId, {
+        .delete("http://localhost:3000/api/user/delete", +userId, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
-          }
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
         })
         .then(() => {
           localStorage.clear();
-          this.$router.push('/');
+          this.$router.push("/");
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
   },
 };

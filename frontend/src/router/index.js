@@ -7,6 +7,7 @@ import Profile from '../views/Profile.vue'
 import PostForm from '../views/PostForm.vue'
 import Admin from '../views/Admin.vue'
 import auth from '../middleware/auth'
+import isAdmin from '../middleware/isAdmin'
 import VueRouteMiddleware from 'vue-route-middleware'
 
 Vue.use(VueRouter)
@@ -15,12 +16,24 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('token')) {
+        return next({ name: 'Feed' });
+      }
+      next();
+    }
   },
   {
     path: '/Signup',
     name: 'Signup',
-    component: Signup
+    component: Signup,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('token')) {
+        return next({ name: 'Feed' });
+      }
+      next();
+    }
   },
   {
     path: '/Feed',
@@ -43,8 +56,8 @@ const routes = [
     name: 'Admin',
     component: Admin,
     meta: {
-      middleware: auth
-    }
+      middleware: [auth, isAdmin]
+    },
   },
   {
     path: '/Profile',
@@ -53,7 +66,8 @@ const routes = [
     meta: {
       middleware: auth
     }
-  }
+  },
+  { path: '*', redirect: { name: 'Feed' }}
 ]
 
 const router = new VueRouter({

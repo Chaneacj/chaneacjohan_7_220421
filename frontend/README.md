@@ -1,24 +1,39 @@
-# my-first-vue-cli-app
+## Présentation
+Créer un réseau social d'entreprise.
 
-## Project setup
+## Technologies utilisées
+▹ HTML
+▹ CSS
+▹ JavaScript
+▹ Vue.js
+▹ Node.js
+▹ Express.js
+▹ MySQL
+▹ SQL
+
+## Prérequis :
 ```
-npm install
+Vue.js, Node.js et MySQL.
 ```
 
-### Compiles and hot-reloads for development
+## Installation :
+
+
+### Back-end 
+Démarrer le serveur 
+```
+nodemon server
+```
+
+### Base de données
+Créer base de données
+```
+Remplir le config.json
+```
+
+### Frontend
+Démarrer le serveur 
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Rendez-vous sur `http://localhost:8080/`

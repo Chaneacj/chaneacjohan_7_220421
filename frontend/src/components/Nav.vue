@@ -19,15 +19,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active"  href="#"
-              ><router-link to="/Feed">Feed</router-link></a
-            >
-            <a class="nav-link active" href=""
-              ><router-link to="/Profile"></router-link>Profile</a
-            >
-            <a @click="logout" class="nav-link" href=""
-              ><router-link to="/">Déconnexion</router-link></a
-            >
+              <router-link v-if="userAdmin == 'true'" class="nav-link"  to="/Admin">Admin</router-link>
+            <a class="nav-link" href="#"><router-link to="/Feed">Feed</router-link></a>
+            <router-link class="nav-link" to="/Profile">Profile</router-link>
+            <a @click="logout" class="nav-link" href=""><router-link to="/">Déconnexion</router-link></a>
           </div>
         </div>
       </div>
@@ -38,16 +33,25 @@
 <script>
 export default {
   name: "Nav",
-          methods: {
-            logout() {
-              localStorage.clear();
-            }
-        }
+  data: () => {
+    return {
+      userAdmin: localStorage.getItem("userAdmin"),
+    };
+  },
+  methods: {
+    logout() {
+      localStorage.clear();
+    },
+  },
 };
-
 </script>
 
 <style scoped lang="scss">
+.navbar-expand-lg{
+  #navbarNavAltMarkup{
+    justify-content:flex-end;
+  }
+}
 nav {
   background: #ffffff;
   border-bottom: 2px solid #e8f0fc;

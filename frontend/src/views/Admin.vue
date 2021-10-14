@@ -9,7 +9,9 @@
     >
       <div class="card-body">
         <h5 class="card-title">{{ user.first_name }}</h5>
-        <a v-on:click="deleteUser(user.id)" class="btn btn-primary">Supprimer cette utilisateur</a>
+        <a v-on:click="deleteUser(user.id)" class="btn btn-primary"
+          >Supprimer cette utilisateur</a
+        >
       </div>
     </div>
   </div>

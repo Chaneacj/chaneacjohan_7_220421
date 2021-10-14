@@ -6,18 +6,28 @@
           <p class="col-3 card-text">
             <small class="text-muted"
               ><i class="far fa-calendar"></i
-              >{{ [' ']+dateFormat(post.createdAt) }}</small
+              >{{ [" "] + dateFormat(post.createdAt) }}</small
             >
           </p>
           <p class="col-5 card-text">
             <small class="text-muted"
-              ><i class="far fa-user"></i>{{ [' ']+post.User.first_name +[' ']+ post.User.last_name }}</small
+              ><i class="far fa-user"></i
+              >{{
+                [" "] + post.User.first_name + [" "] + post.User.last_name
+              }}</small
             >
           </p>
-          <p v-on:click="toggleOpened()" v-if="userId == post.UserId" class="col-2 card-text">
+          <p
+            v-on:click="toggleOpened()"
+            v-if="userId == post.UserId || userAdmin == 'true'"
+            class="col-2 btn btn-link"
+          >
             <small> Modifier</small>
           </p>
-          <p class="col-2 card-text" v-if="userId == post.UserId || userAdmin == 'true'">
+          <p
+            class="col-2 btn btn-link"
+            v-if="userId == post.UserId || userAdmin == 'true'"
+          >
             <small v-on:click="deletePost(post.id)">Supprimer</small>
           </p>
         </div>
@@ -28,6 +38,7 @@
           v-model="contentmodifyPost"
           :placeholder="post.content"
           type="text"
+          class="form-control form-text text-muted"
           id="content"
           required
           aria-label="Entrez votre Message"
@@ -41,9 +52,10 @@
           name="image"
           type="file"
           :id="post.id"
-          :ref="'tes'+post.id"
+          ref="photo"
           accept="image"
           aria-label="Sélectionner un fichier"
+          class="form-control form-text text-muted"
         />
         <input
           v-on:click="modifyPost(post.id)"
@@ -62,8 +74,9 @@
       <hr class="solid" />
       <div>
         <form @submit="createComment">
+          <div class="form-group">
           <textarea
-            class="form-control"
+            class="form-control form-text text-muted"
             v-model="newCommentMsg"
             type="text"
             placeholder="Commenter le message"
@@ -71,32 +84,37 @@
             required
             aria-label="Entrez le titre de votre article"
           />
-          <button type="submit">Publier</button>
+          <button class="btn btn-outline-primary" type="submit">Publier</button>
+          </div>
         </form>
       </div>
       <hr class="solid" />
       <div class="displayComment" v-for="comment in comments" :key="comment.id">
         <div>
           <div class="row">
-            <div class="col-md-2">
-              <img class="img-fluid rounded-start" alt="..." />
-            </div>
             <div class="col-md-10">
               <div class="card-body">
                 <div class="row card-info">
-                  <p class="col-9 card-text">
+                  <p class="col-3 card-text">
                     <small class="text-muted">{{
                       dateFormat(comment.createdAt)
                     }}</small>
                   </p>
                   <p class="col-3 card-text">
-                    <small
+                    <small class="text-muted">{{
+                      comment.User.first_name + [" "] + comment.User.last_name
+                    }}</small>
+                  </p>
+                  <p
+                   v-if="userId == comment.UserId || userAdmin == 'true'"
+                    class="col-6 card-text"
+                  >
+                    <small 
                       v-on:click="deleteComment(comment.id)"
-                      class="text-muted"
+                      class="btn btn-link"
                       >Supprimer</small
                     >
                   </p>
-                  <h6 class="card-title">Name</h6>
                 </div>
               </div>
             </div>
@@ -151,8 +169,7 @@ export default {
     },
 
     getFile(id) {
-      console.log(document.getElementById(id));
-      this.file = document.getElementById(id).file.files[0];
+      this.file = document.getElementById(id).files[0];
       console.log(this.file);
     },
 
@@ -181,7 +198,7 @@ export default {
       const postId = id;
       const formData = new FormData();
       formData.append("content", this.contentmodifyPost);
-      formData.append("image", this.imagePost);
+      formData.append("image", this.file);
 
       axios
         .put("http://localhost:3000/api/post/update/" + postId, formData, {
@@ -314,6 +331,15 @@ export default {
       font-weight: 400;
       letter-spacing: 0.583333px;
     }
+    
+    .btn-link {
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+      letter-spacing: 0.583333px;
+      padding-top: 0;
+      text-decoration: none;
+    }
   }
 
   form {
@@ -378,7 +404,7 @@ export default {
     }
 
     #content {
-      font-size: 10px;
+      font-size: 14px;
       letter-spacing: 0.18px;
       padding: 0.2em 0.8em;
       width: -moz-available;

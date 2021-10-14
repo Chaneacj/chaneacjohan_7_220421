@@ -99,21 +99,20 @@ export default {
         firstName : this.firstName,
         lastName : this.lastName,
       }
-/*    const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/;
+      const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/;
       const regexEmail = /^[a-z0-9!#$ %& '*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&' * +/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/g;
-      const nameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/; */
+      const nameRegex = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/; 
       if (
-        (this.email !== null || this.firstName !== null|| this.lastName !== null || this.password !== null) 
-        //(regexPassword.test(this.password) && regexEmail.test(this.email) && nameRegex.test(this.lastName) && nameRegex.test(this.fistName))
+        (this.email !== null || this.firstName !== null|| this.lastName !== null || this.password !== null) &&
+        (regexPassword.test(this.password) && regexEmail.test(this.email) && nameRegex.test(this.lastName) && nameRegex.test(this.fistName))
       ) {
         axios
           .post("http://localhost:3000/api/user/signup" , contact , {headers : {authorization : "bare "}})
-          .then((json) => {console.log(json)})
-          this.$router.push("/");
-    }  else {
+          .then((json) => {console.log(json); this.$router.push("/");})
+      }  else {
         alert("Un problème de saisie est survenue");
       }
-      }
+    }
   },
 }; 
 </script>

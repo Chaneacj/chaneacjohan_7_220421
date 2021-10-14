@@ -6,11 +6,11 @@
         <div class="row card-info">
           <p class="col-3 card-text"></p>
           <p class="col-5 card-text"></p>
-          <p v-on:click="toggleOpened()" class="col-2 card-text">
-            <small class="text-muted">Modifier</small>
+          <p v-if="userId == user.id || userAdmin == 'true'" v-on:click="toggleOpened()" class="col-2 card-text">
+            <small class="text-primary">Modifier</small>
           </p>
-          <p class="col-2 card-text">
-            <small @click="deleteProfile" class="text-muted">Supprimer</small>
+          <p  v-if="userId == user.id || userAdmin == 'true'" class="col-2 card-text">
+            <small @click="deleteProfile" class="text-primary">Supprimer</small>
           </p>
         </div>
         <form v-if="opened">
@@ -38,14 +38,14 @@
             aria-label="Sélectionner un fichier"
           />
           <input
-            v-on:click="modifyUser(user.id)"
+            v-on:click.prevent="modifyUser(user.id)"
             type="submit"
             id="submit"
             value="Modifier"
           />
         </form>
-        <div class="card-img" v-if="user.photo">
-          <img class="img-circle" :src="user.photo" alt="..." />
+        <div class="card-img"  v-if="user.photo">
+          <div class="img" :style="{'background-image': `url('${user.photo}')`}"></div> 
         </div>
 
         <div class="card-body">
@@ -80,6 +80,7 @@ export default {
       userId: localStorage.getItem("userId"),
       opened: false,
       file: "",
+      userAdmin: localStorage.getItem("userAdmin"),
     };
   },
 
@@ -92,9 +93,9 @@ export default {
     },
 
     getFile(id) {
-      console.log(document.getElementById(id));
-      this.file = document.getElementById(id).file.files[0];
-      console.log(this.file);
+      //console.log(document.getElementById(id));
+      this.file = document.getElementById(id).files[0];
+      //console.log(this.file);
     },
 
     // Permet d'afficher le champ pour modifier un message
@@ -116,6 +117,32 @@ export default {
         photo.style.display = "block";
         this.showInputModify = !this.showInputModify;
       }
+    },
+
+
+     // Permet de modifier le profile
+    modifyUser(id) {
+      const userId = id;
+      const formData = new FormData();
+      formData.append("bio", this.contentmodifyUser);
+      formData.append("image", this.file);
+
+      console.log(this.contentmodifyUser , this.file)
+
+      axios
+        .put("http://localhost:3000/api/user/profil/" + userId, formData, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((error) => {
+          const msgerror = error.response.data;
+          this.notyf.error(msgerror.error);
+        });
     },
 
     // Permet d'afficher les informations de profil
@@ -275,6 +302,22 @@ export default {
       letter-spacing: 0.2px;
       margin-top: 8px;
     }
+
   }
+
+    .card-img{
+      width: 100%;
+      display:flex;
+      justify-content:center;
+
+      .img{
+        width: 300px;
+        height:300px;
+        border-radius:50%;
+        background:grey;
+        background-size:cover;
+      }
+    }
 }
+
 </style>

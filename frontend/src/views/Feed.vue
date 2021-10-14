@@ -2,7 +2,7 @@
   <div>
     <Nav />
     <div class="container" style="max-width: 540px">
-      <button type="button" class="btn btn-primary btn-block">
+      <button type="button" class="btn btn-primary btn-lg btn-block">
         <router-link to="/PostForm">Ajouter un post</router-link>
       </button>
     </div>
